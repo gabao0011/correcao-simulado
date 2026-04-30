@@ -7,7 +7,7 @@
         <div class="col-12">
             <label for="valor" class="form-label">Valor</label>
             <input type="text" class="form-control" id="valor" wire:model='valor'>
-        </div> wire
+        </div>
         <div class="col-md-12">
             <label for="qtd_estoque" class="form-label">Qtd. Estoque</label>
             <input type="text" class="form-control" id="qtd_estoque" wire:model='qtd_estoque'>

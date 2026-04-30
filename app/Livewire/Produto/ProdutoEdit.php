@@ -21,15 +21,30 @@ class ProdutoEdit extends Component
             return redirect()->route('produto.index');
         }
 
-        $this->produtoId = $produto->produtoId;
+        $this->produtoId = $produto->id;
         $this->nome = $produto->nome;
         $this->valor = $produto->valor;
         $this->qtd_estoque = $produto->qtd_estoque;
         $this->qtd_minima = $produto->qtd_minima;
     }
 
-    public function update($id){
+    public function update(){
+        $produto = Produto::find($this->produtoId);
 
+        if($produto == null){
+            session()->flash('error', 'Produto não encontrado');
+            return redirect()->route('produto.index');
+        }
+
+        $produto->nome = $this->nome;
+        $produto->valor = $this->valor;
+        $produto->qtd_estoque = $this->qtd_estoque;
+        $produto->qtd_minima = $this->qtd_minima;
+
+        $produto->save();
+
+        session()->flash('success', 'Atualizado');
+        return redirect()->route('produto.index');
     }
 
     public function render()
