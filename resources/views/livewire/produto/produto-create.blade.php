@@ -2,11 +2,11 @@
     <form class="row g-3" wire:submit.prevent='store'>
         <div class="col-12">
             <label for="nome" class="form-label">Nome</label>
-            <input type="text" class="form-control" id="nome" wire:model='nome'>
+            <input type="text" class="form-control" id="nome" wire:model='nome' placeholder="Nome do Produto">
         </div>
         <div class="col-12">
             <label for="valor" class="form-label">Valor</label>
-            <input type="text" class="form-control" id="valor" wire:model='valor'>
+            <input type="text" class="form-control" id="valor" wire:model='valor' placeholder="R$">
         </div>
         <div class="col-md-12">
             <label for="qtd_estoque" class="form-label">Qtd. Estoque</label>
@@ -14,9 +14,7 @@
         </div>
         <div class="col-md-12">
             <label for="qtd_minima" class="form-label">Qtd. Minima</label>
-            <input type="text" class="form-control" id="qtd_minima" wire:model='qtd_minima'>
-        </div>
-        <div class="col-12">
+            <input type="text" class="form-control" id="qtd_minima" wire:model='qtd_minima' placeholder="Mín: 5">
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Salvar</button>
