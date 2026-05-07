@@ -10,8 +10,8 @@ class MovimentacaoCreate extends Component
 {
     public $produtos;
     public $idProdutoSelecionado;
-    public $tipo = 'saída';
-    public $quantidade;
+    public $tipo = 'saida';
+    public $quantidade_movimentada;
     public $data_movimentacao;
     public $alertaEstoqueBaixo;
 
@@ -21,6 +21,43 @@ class MovimentacaoCreate extends Component
     }
 
     public function store(){
+        $produto = Produto::find($this->idProdutoSelecionado);
+
+        if($produto->qtd_estoque < $this->quantidade_movimentada && $this->tipo == 'saida'){
+            $this->addError('quantidade_movimentada', 'Quantidade em estoque insuficiente');
+            return;
+        }
+
+        //ATUALIZAR ESTOQUE 
+        if($this->tipo == "entrada"){
+            $produto->qtd_estoque += $this->quantidade_movimentada;
+        }else{
+            $produto->qtd_estoque -= $this->quantidade_movimentada;
+        }
+
+        //REGISTRAR MOVIMENTAÇÃO
+        Movimentacao::create([
+            'quantidade' => $this->quantidade_movimentada,
+            'data_movimentacao' =>$this->data_movimentacao,
+            'tipo' => $this->tipo,
+            'produto_id' => $this->idProdutoSelecionado,
+            'user_id' => 1
+        ]);
+
+        $produto->update();
+
+        $produto->refresh();
+        if($produto->qtd_estoque < $produto->qtd_minima){
+            $this->alertaEstoqueBaixo = "ALERTA: Estoque baixo para {$produto->nome}. Quantidade atual:
+            {$produto->qtd_estoque}";
+        }else{
+            $this->alertaEstoqueBaixo = "";
+        }
+
+        session()->flash('message', 'Movimentação registrada com sucesso!');
+        $this->reset(['quantidade_movimentada', 'tipo']);
+        $this->produtos = Produto::orderBy('nome')->get();
+
     }
 
     public function render()
